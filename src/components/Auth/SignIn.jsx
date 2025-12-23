@@ -18,7 +18,11 @@ export function Login() {
 
   // On entry, clear any stale state; redirect to home if authenticated
   useEffect(() => {
-    dispatch(logoutAndReset());
+
+    if(!localStorage.getItem("accessToken")){
+      dispatch(logoutAndReset());
+    }
+   
     if (isAuthenticated) {
       navigate('/', { replace: true });
     }

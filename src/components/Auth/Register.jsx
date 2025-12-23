@@ -20,7 +20,7 @@ export function Register() {
 
   useEffect(() => {
     // Clear any stale session data on entry to register
-    dispatch(logoutAndReset());
+   
     if (isAuthenticated) {
       navigate('/', { replace: true });
     }
