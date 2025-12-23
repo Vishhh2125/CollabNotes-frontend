@@ -127,7 +127,7 @@ frontend/
 ## Role-Based Authorization Logic
 
 - **Roles:**
-  - `Owner`: Full access to workspace, can manage members and settings
+  
   - `Admin`: Manage notes and members, but limited workspace settings
   - `Member`: Can create, edit, and view notes
 - **Authorization Middleware:**
@@ -137,40 +137,231 @@ frontend/
 
 ---
 
-## API Documentation
+# Multi-Tenant SaaS Notes Management System
 
-### Authentication
-- `POST /api/users/register` — Register a new user
-- `POST /api/users/login` — Login and receive JWT
+# CollabNotes
 
-### Tenants (Workspaces)
-- `POST /api/tenants` — Create a new workspace
-- `GET /api/tenants` — List user’s workspaces
-- `GET /api/tenants/:id` — Get workspace details
-- `PATCH /api/tenants/:id` — Update workspace (Owner/Admin only)
-- `DELETE /api/tenants/:id` — Delete workspace (Owner only)
-
-### Tenant Membership
-- `POST /api/tenant-memberships/invite` — Invite user to workspace (Owner/Admin)
-- `PATCH /api/tenant-memberships/:id/role` — Change member role (Owner/Admin)
-- `DELETE /api/tenant-memberships/:id` — Remove member (Owner/Admin)
-- `GET /api/tenant-memberships/:tenantId` — List members in a workspace
-
-### Notes
-- `POST /api/notes` — Create a note (Member+)
-- `GET /api/notes` — List notes in current workspace
-- `GET /api/notes/:id` — Get note details
-- `PATCH /api/notes/:id` — Update note (Author/Admin/Owner)
-- `DELETE /api/notes/:id` — Delete note (Author/Admin/Owner)
-
-### Error Handling
-- All API responses follow a consistent format with `success`, `message`, and `data` fields.
-- Errors return appropriate HTTP status codes and messages.
+A full-stack SaaS application for managing notes with **multi-tenancy**, **strict tenant isolation**, and **role-based access control**.
+Built with **Node.js (Express)** for the backend and **React (Vite)** for the frontend.
 
 ---
 
-## Contact
-For questions or support, please contact the project maintainer.
+## Table of Contents
 
+* Setup Instructions
+* Architecture Overview
+* Multi-Tenancy Approach
+* Authentication & Authorization
+* Role-Based Authorization Logic
+* API Documentation
+* Deployment
 
-![image alt](https://github.com/Vishhh2125/CollabNotes-frontend/blob/24854f85c0dcdd582f7ea760d6d51c77467657be/image2.png)
+---
+
+## Setup Instructions
+
+### Prerequisites
+
+* Node.js (v16+)
+* npm or yarn
+* MongoDB (local or cloud)
+
+---
+
+### Backend Setup (Local)
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Create `.env` file:
+
+```env
+MONGO_URL=
+PORT=
+ACCESS_TOKEN_SECRET=
+REFRESH_TOKEN_SECRET=
+ACCESS_TOKEN_EXPIRY=
+REFRESH_TOKEN_EXPIRY=
+```
+
+Backend runs at:
+
+```
+http://localhost:5000
+```
+
+---
+
+### Frontend Setup (Local)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Architecture Overview
+
+**Backend**
+
+* Node.js + Express
+* MongoDB with Mongoose
+* Feature-based structure (controllers, models, routes, middleware)
+* Centralized authentication & authorization middleware
+
+**Frontend**
+
+* React (Vite)
+* Redux Toolkit for state management
+* Axios with interceptors for auth handling
+
+> 📌 Add architecture diagram image here
+
+---
+
+## Multi-Tenancy Approach
+
+* Shared database, single schema
+* All tenant-owned entities include `tenantId`
+* User access is resolved through tenant membership
+* Every protected request:
+
+  1. Authenticates user
+  2. Resolves tenant context
+  3. Enforces tenant-level isolation
+* Cross-tenant access is strictly blocked
+
+---
+
+## Authentication & Authorization
+
+### Token Strategy
+
+* **Access Token**
+
+  * Short-lived JWT
+  * Sent via `Authorization: Bearer <token>`
+  * Stored on client (memory / localStorage)
+
+* **Refresh Token**
+
+  * Long-lived token
+  * Stored in **HTTP-only cookies**
+  * Never exposed to JavaScript
+
+### Flow
+
+1. User logs in → receives access token + refresh cookie
+2. Access token used for API calls
+3. If access token expires → `/auth/refresh`
+4. If refresh fails → redirect to login
+
+---
+
+## Role-Based Authorization Logic
+
+### Roles
+
+* **Admin**
+
+  * Invite users
+  * Upgrade subscription
+  * Full note access
+
+* **Member**
+
+  * Create, read, update, delete notes
+  * Restricted to their tenant only
+
+Authorization is enforced via middleware on every protected route.
+
+---
+
+## API Documentation
+
+### Base URLs
+
+| Environment | Base URL                                          |
+| ----------- | ------------------------------------------------- |
+| Local       | `http://localhost:5000/api`                       |
+| Deployed    | `https://<your-backend-service>.onrender.com/api` |
+
+---
+
+### Authentication Routes
+
+```http
+POST /auth/register        # Register new user
+POST /auth/login           # Login user
+GET  /auth/refresh-token   # Generate new access token using refresh token
+```
+
+* Access Token returned in response
+* Refresh Token sent via HTTP-only cookie
+
+---
+
+### Tenant Routes
+
+```http
+POST   /tenant/create                     # Create new tenant
+GET    /tenant/get-all                    # Get all tenants for logged-in user
+DELETE /tenant/delete/:tenantId           # Delete tenant (admin only)
+PATCH  /tenant/edit/subscription/:tenantId# Update tenant subscription plan
+```
+
+---
+
+### Tenant Membership Routes
+
+```http
+GET    /tenant-membership/:tenantId           # Get all memberships for a tenant
+POST   /tenant-membership/:tenantId           # Add member to tenant
+PUT    /tenant-membership/role/:tenantId      # Change member role
+DELETE /tenant-membership/:tenantId           # Remove member from tenant
+```
+
+All membership routes are protected using `verifyJWT` and `checkAccess` middleware.
+
+---
+
+### Notes Routes (Tenant Scoped)
+
+```http
+POST   /notes/create/:tenantId                 # Create note
+GET    /notes/get-all/:tenantId                # Get all notes for tenant
+PATCH  /notes/edit/:tenantId/:noteId           # Edit note
+DELETE /notes/delete/:tenantId/:noteId         # Delete note
+```
+
+All note operations enforce tenant isolation using `tenantId`.
+
+---
+
+## Deployment
+
+**Frontend (Netlify)**
+[https://sprightly-gelato-6bd483.netlify.app](https://sprightly-gelato-6bd483.netlify.app)
+
+**Backend (Render)**
+https://<your-backend-service>.onrender.com
+
+---
+
+## Evaluation Notes
+
+* Backend architecture prioritized
+* Secure JWT handling
+* Strict tenant isolation
+* Clear system design explanation
