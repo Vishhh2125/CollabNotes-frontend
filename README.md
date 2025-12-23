@@ -68,13 +68,17 @@ REFRESH_TOKEN_EXPIRY=""
   - Component-based structure
   - State management with Redux Toolkit
   - API calls via a centralized `api.js`
+ 
+
+
+![image alt](https://github.com/Vishhh2125/CollabNotes-frontend/blob/a59f3e8439b385392bc6951e7c980789aa43bb6d/image1.png)
 
 **Folder Structure:**
 ```
 
 ## Architecture Overview
 
-![image alt](https://github.com/Vishhh2125/CollabNotes-frontend/blob/main/image1.png?raw=true)
+
 
 **Backend:** Node.js, Express, MongoDB (Mongoose)
   - Organized by feature: controllers, models, routes, middlewares, utils
