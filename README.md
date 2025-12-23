@@ -355,7 +355,7 @@ All note operations enforce tenant isolation using `tenantId`.
 [https://sprightly-gelato-6bd483.netlify.app](https://sprightly-gelato-6bd483.netlify.app)
 
 **Backend (Render)**
-https://<your-backend-service>.onrender.com
+[https://collabnotes-backend-ox8q.onrender.com](https://collabnotes-backend-ox8q.onrender.com)
 
 ---
 
