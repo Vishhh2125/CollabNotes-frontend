@@ -176,15 +176,15 @@ npm install
 npm start
 ```
 
-Create `.env` file:
+Create a `.env` file in the backend directory with the following content:
 
 ```env
-MONGO_URL=
-PORT=
-ACCESS_TOKEN_SECRET=
-REFRESH_TOKEN_SECRET=
-ACCESS_TOKEN_EXPIRY=
-REFRESH_TOKEN_EXPIRY=
+MONGO_URL=""
+PORT=""
+ACCESS_TOKEN_SECRET=""
+REFRESH_TOKEN_SECRET=""
+ACCESS_TOKEN_EXPIRY=""
+REFRESH_TOKEN_EXPIRY=""
 ```
 
 Backend runs at:
@@ -361,7 +361,12 @@ https://<your-backend-service>.onrender.com
 
 ## Evaluation Notes
 
+
 * Backend architecture prioritized
 * Secure JWT handling
 * Strict tenant isolation
 * Clear system design explanation
+
+---
+
+![System Overview](./image2.png)
