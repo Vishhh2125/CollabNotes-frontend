@@ -171,3 +171,6 @@ frontend/
 
 ## Contact
 For questions or support, please contact the project maintainer.
+
+
+![image alt](https://github.com/Vishhh2125/CollabNotes-frontend/blob/24854f85c0dcdd582f7ea760d6d51c77467657be/image2.png)
