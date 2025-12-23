@@ -56,8 +56,8 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="bg-[#121421] border-b border-slate-700/50 sticky top-0 z-50 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <header className="bg-[#121421] border-b border-slate-700/50 sticky top-0 z-50 backdrop-blur-sm w-full">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           
           {/* Left Section: Logo + Navigation */}

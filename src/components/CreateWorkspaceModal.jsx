@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTenant, getAllTenants, setCurrentTenant } from '../features/tenantSlice';
 
@@ -64,12 +65,31 @@ export default function CreateWorkspaceModal({ isOpen, onClose }) {
     await handleCreateWorkspace(formData);
   };
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-[#121421] rounded-xl border border-indigo-400/25 w-full max-w-md">
-        <div className="flex items-center justify-between p-6 border-b border-indigo-400/25">
+  const modalContent = (
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div className="bg-[#121421] rounded-xl border border-indigo-400/25 w-full max-w-md max-h-[90vh] flex flex-col shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-indigo-400/25 flex-shrink-0">
           <h2 className="text-xl font-semibold text-white">Create New Workspace</h2>
           <button
             onClick={onClose}
@@ -82,7 +102,7 @@ export default function CreateWorkspaceModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1 min-h-0">
           {error && (
             <div className="p-3 rounded-md bg-red-500/10 border border-red-500/20">
               <p className="text-red-500 text-sm">{error}</p>
@@ -149,5 +169,8 @@ export default function CreateWorkspaceModal({ isOpen, onClose }) {
       </div>
     </div>
   );
+
+  // Render modal using portal to document.body to escape parent containers
+  return createPortal(modalContent, document.body);
 }
 
