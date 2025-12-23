@@ -74,9 +74,7 @@ REFRESH_TOKEN_EXPIRY=""
 
 ## Architecture Overview
 
-<p align="center">
-  <img src="./image1.png" alt="Multi-Tenant SaaS Notes Management System Architecture" width="600"/>
-</p>
+![image alt](https://github.com/Vishhh2125/CollabNotes-frontend/blob/main/image1.png?raw=true)
 
 **Backend:** Node.js, Express, MongoDB (Mongoose)
   - Organized by feature: controllers, models, routes, middlewares, utils
