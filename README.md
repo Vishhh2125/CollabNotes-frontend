@@ -30,6 +30,13 @@ A full-stack SaaS application for managing notes with multi-tenancy and role-bas
    npm install
    ```
 3. Create a `.env` file based on `.env.example` and set your environment variables (MongoDB URI, JWT secret, etc).
+MONGO_URL=""
+PORT=""
+ACCESS_TOKEN_SECRET=""
+REFRESH_TOKEN_SECRET=""
+
+ACCESS_TOKEN_EXPIRY=""
+REFRESH_TOKEN_EXPIRY=""
 4. Start the backend server:
    ```sh
    npm start
@@ -48,7 +55,7 @@ A full-stack SaaS application for managing notes with multi-tenancy and role-bas
    ```sh
    npm run dev
    ```
-4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+4. Open [http://localhost:5173](http://localhost:5173) in your browser for running locally 
 
 ---
 
@@ -68,7 +75,7 @@ A full-stack SaaS application for managing notes with multi-tenancy and role-bas
 ## Architecture Overview
 
 <p align="center">
-  <img src="./architecture-diagram.png" alt="Multi-Tenant SaaS Notes Management System Architecture" width="600"/>
+  <img src="../architecture-diagram.png" alt="Multi-Tenant SaaS Notes Management System Architecture" width="600"/>
 </p>
 
 **Backend:** Node.js, Express, MongoDB (Mongoose)
