@@ -75,7 +75,7 @@ REFRESH_TOKEN_EXPIRY=""
 ## Architecture Overview
 
 <p align="center">
-  <img src="../architecture-diagram.png" alt="Multi-Tenant SaaS Notes Management System Architecture" width="600"/>
+  <img src="./image1.png" alt="Multi-Tenant SaaS Notes Management System Architecture" width="600"/>
 </p>
 
 **Backend:** Node.js, Express, MongoDB (Mongoose)
