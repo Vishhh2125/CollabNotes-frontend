@@ -7,7 +7,7 @@ export const setLogoutHandler = (handler) => {
 };
 
 const api = axios.create({
-    baseURL: "http://localhost:5000/api/v1",
+    baseURL: "https://collabnotes-backend-ox8q.onrender.com/api/v1",
     withCredentials: true, 
 });
 
@@ -84,7 +84,7 @@ api.interceptors.response.use(
 
         try {
             const refreshResponse = await axios.get(
-                "http://localhost:5000/api/v1/users/refresh-token",
+                "https://collabnotes-backend-ox8q.onrender.com/api/v1/users/refresh-token",
                 { withCredentials: true }
             );
 
